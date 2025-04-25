@@ -4,14 +4,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn import ensemble
 
+units23=pd.read_csv('data/allunits_puf_23.csv')
+occupied23=pd.read_csv('data/occupied_puf_23.csv')
+person23=pd.read_csv('data/person_puf_23.csv')
 
-units23=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_23.csv')
-occupied23=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_23.csv')
-person23=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_23.csv')
-
-units21=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_21.csv')
-occupied21=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_21.csv')
-person21=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_21.csv')
+# units21=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_21.csv')
+# occupied21=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_21.csv')
+# person21=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_21.csv')
 
 # print(units23.shape, occupied23.shape, person23.shape)
 # print(units21.shape, occupied21.shape, person21.shape)
