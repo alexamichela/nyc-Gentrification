@@ -8,13 +8,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score
 
-units23=pd.read_csv('data/allunits_puf_23.csv')
-occupied23=pd.read_csv('data/occupied_puf_23.csv')
-person23=pd.read_csv('data/person_puf_23.csv')
+# units23=pd.read_csv('data/allunits_puf_23.csv')
+# occupied23=pd.read_csv('data/occupied_puf_23.csv')
+# person23=pd.read_csv('data/person_puf_23.csv')
 
-# units21=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_21.csv')
-# occupied21=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_21.csv')
-# person21=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_21.csv')
+units23=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_23.csv')
+occupied23=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_23.csv')
+person23=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_23.csv')
 
 # print(units23.shape, occupied23.shape, person23.shape)
 # print(units21.shape, occupied21.shape, person21.shape)
@@ -41,7 +41,8 @@ data23=data23[(data23['INC_EARNINGS_P']!=-2)]
 # print(data23.isna().any(axis=1).sum())
 
 data23= data23.loc[:, cols]
-print(data23.shape)
+print(data23.columns)
+
 
 # FEATURIZATION ----------------------------------------------------------------------------------------
 # creating the outcome variable
@@ -74,6 +75,12 @@ for i,r in data23.iterrows():
         data23.loc[i,'isFemale']=1
     else:
         data23.loc[i,'otherGen']=1
+
+data23['employmentStatus']=0
+for i,r in data23.iterrows():
+    if r['INC_EARNINGS_P']==1:
+        data23.loc[i,'youngIndicator']=1
+
 
 data23=data23.drop(columns=['HH62PLUS', 'HHUNDER18', 'HHUNDER6', 'GENDER_P'])
 
