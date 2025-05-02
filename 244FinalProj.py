@@ -196,42 +196,20 @@ for i in [50,100,150]:
 #        y_pred = model.predict(X_val)
 #        print(f"F1 Score on validation data: {f1_score(y_val, y_pred)}")
 
+# Final Testing ----------------------------------------------
+poly = PolynomialFeatures(degree=1)
+# Fit and transform training data
+X_train_poly = poly.fit_transform(X_train)
+# Transform validation data
+X_test_poly = poly.transform(X_train)
+logreg = LogisticRegression(random_state=0, C=10, max_iter=10000)
+logreg.fit(X_train_poly, y_train)
+print(f"Accuracy of classifier with 1 degree polynomial combination of features and C=10: {logreg.score(X_test_poly, y_val)}")
+y_pred = logreg.predict(X_test_poly)
+print(f"F1 Score on validation data with degree=1 and C=10: {f1_score(y_test, y_pred)}")
 
-
-# SVM Output:
-# RBF Kernel Accuracy on validation data: 0.989778534923339
-# RBF Kernel F1 Score on validation data: 0.9947643979057592
-# Linear Kernel Accuracy on validation data: 1.0
-# Linear Kernel F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1.0 and gamma=1.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1.0 and gamma=10.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1.0 and gamma=100.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1.0 and gamma=1000.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=10.0 and gamma=1.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=10.0 and gamma=10.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=10.0 and gamma=100.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=10.0 and gamma=1000.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=100.0 and gamma=1.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=100.0 and gamma=10.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=100.0 and gamma=100.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=100.0 and gamma=1000.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1000.0 and gamma=1.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1000.0 and gamma=10.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1000.0 and gamma=100.0: 1.0
-# F1 Score on validation data: 1.0
-# Accuracy on validation data with C=1000.0 and gamma=1000.0: 1.0
-# F1 Score on validation data: 1.0
+svm = SVC(C=1, gamma=1, kernel="linear", random_state=0)
+svm.fit(X_train, y_train)
+print(f"Linear Kernel, C=1, gamma=1 Accuracy on validation data: {svm.score(X_test, y_test)}")
+y_pred2 = svm.predict(X_test)
+print(f"Linear Kernel, C=1, gamma=1 F1 Score on validation data: {f1_score(y_test, y_pred2)}")
