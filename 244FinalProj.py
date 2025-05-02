@@ -108,21 +108,37 @@ X_test = scaler.transform(X_test)
 # numFt=[]
 # maxDep=[]
 
-for i in [5,20,50,70,100,150,200]:
-    for j in ['sqrt', 'log2']:
-        for k in range(1,10):
-            forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=j, max_depth=k)
-            forestModel.fit(X_train, y_train)
-            accuracy = forestModel.score(X_val, y_val)
-            y_pred = forestModel.predict(X_val)
-            f1 = f1_score(y_val, y_pred)
-            print(f"Accuracy with n_estimators={i}, max_features={j}, max_depth={k}: {accuracy}")
-            print(f"F1 Score: {f1}")
+
+
+
+for i in [50,100,150]:
+    for k in range(1,10):
+        forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=None, max_depth=k)
+        forestModel.fit(X_train, y_train)
+        accuracy = forestModel.score(X_val, y_val)
+        y_pred = forestModel.predict(X_val)
+        f1 = f1_score(y_val, y_pred)
+        print(f"Accuracy with n_estimators={i}, max_features=None, max_depth={k}: {accuracy}")
+        print(f"F1 Score: {f1}")
+
+# for j in ['sqrt', 'log2',None]:
+#     forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=100, max_features=j, max_depth=None)
+#     forestModel.fit(X_train, y_train)
+#     accuracy = forestModel.score(X_val, y_val)
+#     y_pred = forestModel.predict(X_val)
+#     f1 = f1_score(y_val, y_pred)
+#     print(f"Accuracy with n_estimators=default 100, max_features={j}, max_depth=None: {accuracy}")
+#     print(f"F1 Score: {f1}")
+
+
+
+
+
 
 
 # Logistic Regression
 # Generate features corresponding to different degree polynomial combinations and print the accuracy for each degree
-# for degree in range(4, 11):
+# for degree in range(1,6):
 #    poly = PolynomialFeatures(degree=degree)
 #    # Fit and transform training data
 #    X_train_poly = poly.fit_transform(X_train)
@@ -130,7 +146,7 @@ for i in [5,20,50,70,100,150,200]:
 #    # Transform validation data
 #    X_val_poly = poly.transform(X_val)
     
-#    logreg = LogisticRegression(random_state=0, max_iter=10000)
+#    logreg = LogisticRegression(random_state=0, max_iter=1000)
 #    logreg.fit(X_train_poly, y_train)
 #    print(f"Accuracy of classifier with {degree} degree polynomial combination of features: {logreg.score(X_val_poly, y_val)}")
 #    y_pred = logreg.predict(X_val_poly)
