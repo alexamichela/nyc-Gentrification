@@ -103,8 +103,22 @@ X_train = scaler.transform(X_train)
 X_val = scaler.transform(X_val)
 X_test = scaler.transform(X_test)
 
-# # Random Forest Classifier
-# forestModel = ensemble.RandomForestClassifier(random_state=0) 
+# Random Forest Classifier
+# numTrees=[]
+# numFt=[]
+# maxDep=[]
+
+for i in [5,20,50,70,100,150,200]:
+    for j in ['sqrt', 'log2']:
+        for k in range(1,10):
+            forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=j, max_depth=k)
+            forestModel.fit(X_train, y_train)
+            accuracy = forestModel.score(X_val, y_val)
+            y_pred = forestModel.predict(X_val)
+            f1 = f1_score(y_val, y_pred)
+            print(f"Accuracy with n_estimators={i}, max_features={j}, max_depth={k}: {accuracy}")
+            print(f"F1 Score: {f1}")
+
 
 # Logistic Regression
 # Generate features corresponding to different degree polynomial combinations and print the accuracy for each degree
