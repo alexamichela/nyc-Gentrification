@@ -2,19 +2,20 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
 from sklearn import ensemble
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score
 
-# units23=pd.read_csv('data/allunits_puf_23.csv')
-# occupied23=pd.read_csv('data/occupied_puf_23.csv')
-# person23=pd.read_csv('data/person_puf_23.csv')
+units23=pd.read_csv('data/allunits_puf_23.csv')
+occupied23=pd.read_csv('data/occupied_puf_23.csv')
+person23=pd.read_csv('data/person_puf_23.csv')
 
-units23=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_23.csv')
-occupied23=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_23.csv')
-person23=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_23.csv')
+# units23=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_23.csv')
+# occupied23=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_23.csv')
+# person23=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_23.csv')
 
 # print(units23.shape, occupied23.shape, person23.shape)
 # print(units21.shape, occupied21.shape, person21.shape)
@@ -111,15 +112,15 @@ X_test = scaler.transform(X_test)
 
 
 
-for i in [50,100,150]:
-    for k in range(1,10):
-        forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=None, max_depth=k)
-        forestModel.fit(X_train, y_train)
-        accuracy = forestModel.score(X_val, y_val)
-        y_pred = forestModel.predict(X_val)
-        f1 = f1_score(y_val, y_pred)
-        print(f"Accuracy with n_estimators={i}, max_features=None, max_depth={k}: {accuracy}")
-        print(f"F1 Score: {f1}")
+# for i in [50,100,150]:
+#     for k in range(1,10):
+#         forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=None, max_depth=k)
+#         forestModel.fit(X_train, y_train)
+#         accuracy = forestModel.score(X_val, y_val)
+#         y_pred = forestModel.predict(X_val)
+#         f1 = f1_score(y_val, y_pred)
+#         print(f"Accuracy with n_estimators={i}, max_features=None, max_depth={k}: {accuracy}")
+#         print(f"F1 Score: {f1}")
 
 # for j in ['sqrt', 'log2',None]:
 #     forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=100, max_features=j, max_depth=None)
@@ -152,12 +153,12 @@ for i in [50,100,150]:
 #    y_pred = logreg.predict(X_val_poly)
 #    print(f"F1 Score on validation data with degree={degree}: {f1_score(y_val, y_pred)}")
 
-# #DETERMINE WHAT DEGREE HAS THE HIGHEST ACCURACY ⇒ use that degree
-# poly = PolynomialFeatures(degree=__)
-# # Fit and transform training data
-# X_train_poly = poly.fit_transform(X_train)
-# # Transform validation data
-# X_val_poly = poly.transform(X_val)
+#DETERMINE WHAT DEGREE HAS THE HIGHEST ACCURACY ⇒ use that degree
+poly = PolynomialFeatures(degree=1)
+# Fit and transform training data
+X_train_poly = poly.fit_transform(X_train)
+# Transform validation data
+X_val_poly = poly.transform(X_val)
 
 # # Using 5-fold cross validation, tune the regularization hyperparameter C for logistic regression
 # reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
@@ -165,6 +166,15 @@ for i in [50,100,150]:
 #    classifier = LogisticRegression(random_state=0, C=c)
 #    scores = cross_val_score(classifier, X_train_poly, y_train, cv=5)
 #    print(f"Average accuracy of logistic regression with C={c}: {np.mean(scores)}")
+
+# without cross validation
+reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
+for c in reg_strengths:
+   classifier = LogisticRegression(random_state=0, C=c)
+   classifier.fit(X_train_poly, y_train)
+   print(f"Accuracy of classifier with 1 degree polynomial combination of features and C={c}: {classifier.score(X_val_poly, y_val)}")
+   y_pred = classifier.predict(X_val_poly)
+   print(f"F1 Score on validation data with degree=1, C={c}: {f1_score(y_val, y_pred)}")
 
 #Support Vector Machines
 # model = SVC(random_state=0)
