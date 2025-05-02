@@ -201,15 +201,25 @@ poly = PolynomialFeatures(degree=1)
 # Fit and transform training data
 X_train_poly = poly.fit_transform(X_train)
 # Transform validation data
-X_test_poly = poly.transform(X_train)
+X_test_poly = poly.transform(X_test)
 logreg = LogisticRegression(random_state=0, C=10, max_iter=10000)
 logreg.fit(X_train_poly, y_train)
-print(f"Accuracy of classifier with 1 degree polynomial combination of features and C=10: {logreg.score(X_test_poly, y_val)}")
+print(f"Accuracy of classifier with 1 degree polynomial combination of features and C=10: {logreg.score(X_test_poly, y_test)}")
 y_pred = logreg.predict(X_test_poly)
 print(f"F1 Score on validation data with degree=1 and C=10: {f1_score(y_test, y_pred)}")
 
-svm = SVC(C=1, gamma=1, kernel="linear", random_state=0)
-svm.fit(X_train, y_train)
-print(f"Linear Kernel, C=1, gamma=1 Accuracy on validation data: {svm.score(X_test, y_test)}")
-y_pred2 = svm.predict(X_test)
-print(f"Linear Kernel, C=1, gamma=1 F1 Score on validation data: {f1_score(y_test, y_pred2)}")
+# Get the coefficients (weights)
+weights = logreg.coef_
+
+# Create a list of (weight, feature_name) tuples
+weight_feature_pairs = []
+for i, feature in enumerate(data23.columns):
+    weight_feature_pairs.append((weights[0][i], feature))
+
+# Sort the list of tuples based on the weight (the first element of each tuple)
+sorted_weights = sorted(weight_feature_pairs)
+
+# Print the sorted weights
+print("Weights (Coefficients) from Lowest to Highest:")
+for weight, feature in sorted_weights:
+    print(f"{feature}: {weight:.4f}")
