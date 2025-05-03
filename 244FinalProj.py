@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -9,13 +10,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score
 
-# units23=pd.read_csv('data/allunits_puf_23.csv')
-# occupied23=pd.read_csv('data/occupied_puf_23.csv')
-# person23=pd.read_csv('data/person_puf_23.csv')
+units23=pd.read_csv('data/allunits_puf_23.csv')
+occupied23=pd.read_csv('data/occupied_puf_23.csv')
+person23=pd.read_csv('data/person_puf_23.csv')
 
-units23=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_23.csv')
-occupied23=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_23.csv')
-person23=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_23.csv')
+# units23=pd.read_csv('/Users/phillysciastanley/Downloads/allunits_puf_23.csv')
+# occupied23=pd.read_csv('/Users/phillysciastanley/Downloads/occupied_puf_23.csv')
+# person23=pd.read_csv('/Users/phillysciastanley/Downloads/person_puf_23.csv')
 
 # print(units23.shape, occupied23.shape, person23.shape)
 # print(units21.shape, occupied21.shape, person21.shape)
@@ -109,16 +110,16 @@ X_test = scaler.transform(X_test)
 # numFt=[]
 # maxDep=[]
 
-for i in [50,100,150,200]:
-    for j in ['sqrt', 'log2']:
-        for k in range(9,21):
-            forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=j, max_depth=k)
-            forestModel.fit(X_train, y_train)
-            accuracy = forestModel.score(X_val, y_val)
-            y_pred = forestModel.predict(X_val)
-            f1 = f1_score(y_val, y_pred)
-            print(f"Accuracy with n_estimators={i}, max_features={j}, max_depth={k}: {accuracy}")
-            print(f"F1 Score: {f1}")
+# for i in [50,100,150,200]:
+#     for j in ['sqrt', 'log2']:
+#         for k in range(9,21):
+#             forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=j, max_depth=k)
+#             forestModel.fit(X_train, y_train)
+#             accuracy = forestModel.score(X_val, y_val)
+#             y_pred = forestModel.predict(X_val)
+#             f1 = f1_score(y_val, y_pred)
+#             print(f"Accuracy with n_estimators={i}, max_features={j}, max_depth={k}: {accuracy}")
+#             print(f"F1 Score: {f1}")
 
 # print('\nfinding best hyperparameters\n')
 # print("\nbest max features:\n")
@@ -167,12 +168,12 @@ for i in [50,100,150,200]:
 #    y_pred = logreg.predict(X_val_poly)
 #    print(f"F1 Score on validation data with degree={degree}: {f1_score(y_val, y_pred)}")
 
-#DETERMINE WHAT DEGREE HAS THE HIGHEST ACCURACY ⇒ use that degree
-poly = PolynomialFeatures(degree=1)
-# Fit and transform training data
-X_train_poly = poly.fit_transform(X_train)
-# Transform validation data
-X_val_poly = poly.transform(X_val)
+# DETERMINE WHAT DEGREE HAS THE HIGHEST ACCURACY ⇒ use that degree
+# poly = PolynomialFeatures(degree=1)
+# # Fit and transform training data
+# X_train_poly = poly.fit_transform(X_train)
+# # Transform validation data
+# X_val_poly = poly.transform(X_val)
 
 # # Using 5-fold cross validation, tune the regularization hyperparameter C for logistic regression
 # reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
@@ -182,13 +183,13 @@ X_val_poly = poly.transform(X_val)
 #    print(f"Average accuracy of logistic regression with C={c}: {np.mean(scores)}")
 
 # without cross validation
-reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
-for c in reg_strengths:
-   classifier = LogisticRegression(random_state=0, C=c, max_iter=1000)
-   classifier.fit(X_train_poly, y_train)
-   print(f"Accuracy of classifier with 1 degree polynomial combination of features and C={c}: {classifier.score(X_val_poly, y_val)}")
-   y_pred = classifier.predict(X_val_poly)
-   print(f"F1 Score on validation data with degree=1, C={c}: {f1_score(y_val, y_pred)}")
+# reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
+# for c in reg_strengths:
+#    classifier = LogisticRegression(random_state=0, C=c, max_iter=1000)
+#    classifier.fit(X_train_poly, y_train)
+#    print(f"Accuracy of classifier with 1 degree polynomial combination of features and C={c}: {classifier.score(X_val_poly, y_val)}")
+#    y_pred = classifier.predict(X_val_poly)
+#    print(f"F1 Score on validation data with degree=1, C={c}: {f1_score(y_val, y_pred)}")
 
 #Support Vector Machines
 # model = SVC(random_state=0)
@@ -210,54 +211,26 @@ for c in reg_strengths:
 # and test it on the validation data.
 # For parameter C, explore values of 1.0, 10.0, 100.0, and 1000.0
 # For parameter gamma, explore values of 1.0, 10.0, 100.0, and 1000.0 
-c_values = [1.0, 10.0, 100.0, 1000.0]
-gamma_values = [1.0, 10.0, 100.0, 1000.0]
-print('Linear Kernel Performance')
-for c in c_values:
-   for gamma in gamma_values:
-       model = SVC(C=c, gamma=gamma, kernel='linear', random_state=0)
-       model.fit(X_train, y_train)
-       y_pred = model.predict(X_val)
-       print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}, {f1_score(y_val, y_pred)}")
+# c_values = [1.0, 10.0, 100.0, 1000.0]
+# gamma_values = [1.0, 10.0, 100.0, 1000.0]
+# print('Linear Kernel Performance')
+# for c in c_values:
+#    for gamma in gamma_values:
+#        model = SVC(C=c, gamma=gamma, kernel='linear', random_state=0)
+#        model.fit(X_train, y_train)
+#        y_pred = model.predict(X_val)
+#        print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}, {f1_score(y_val, y_pred)}")
 
-print('RBF Kernel Performance')
-for c in c_values:
-   for gamma in gamma_values:
-       model = SVC(C=c, gamma=gamma, random_state=0)
-       model.fit(X_train, y_train)
-       y_pred = model.predict(X_val)
-       print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}, {f1_score(y_val, y_pred)}")
+# print('RBF Kernel Performance')
+# for c in c_values:
+#    for gamma in gamma_values:
+#        model = SVC(C=c, gamma=gamma, random_state=0)
+#        model.fit(X_train, y_train)
+#        y_pred = model.predict(X_val)
+#        print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}, {f1_score(y_val, y_pred)}")
        
 # Final Testing ----------------------------------------------
-# poly = PolynomialFeatures(degree=1)
-# # Fit and transform training data
-# X_train_poly = poly.fit_transform(X_train)
-# # Transform validation data
-# X_test_poly = poly.transform(X_test)
-# logreg = LogisticRegression(random_state=0, C=10, max_iter=10000)
-# logreg.fit(X_train_poly, y_train)
-# print(f"Accuracy of classifier with 1 degree polynomial combination of features and C=10: {logreg.score(X_test_poly, y_test)}")
-# y_pred = logreg.predict(X_test_poly)
-# print(f"F1 Score on validation data with degree=1 and C=10: {f1_score(y_test, y_pred)}")
-
-# Get the coefficients (weights)
-# weights = logreg.coef_
-
-# Create a list of (weight, feature_name) tuples
-# weight_feature_pairs = []
-# for i, feature in enumerate(data23.columns):
-#     weight_feature_pairs.append((weights[0][i], feature))
-
-# # Sort the list of tuples based on the weight (the first element of each tuple)
-# sorted_weights = sorted(weight_feature_pairs)
-
-# # Print the sorted weights
-# print("Weights (Coefficients) from Lowest to Highest:")
-# for weight, feature in sorted_weights:
-#     print(f"{feature}: {weight:.4f}")
-
-
-# final testing for random forest ----------------------------------------------
+# ------------------- Random Forest
 # print("\nX_train:\n")
 # print(X_train)
 # print("\ny_train:\n")
@@ -270,3 +243,45 @@ for c in c_values:
 # f1 = f1_score(X_test, y_pred)
 # print(f"Accuracy with n_estimators=150, max_features=None, max_depth=10: {accuracy}")
 # print(f"F1 Score: {f1}")
+
+# ------------------- Logistic Regression
+# poly = PolynomialFeatures(degree=1)
+# # Fit and transform training data
+# X_train_poly = poly.fit_transform(X_train)
+# # Transform validation data
+# X_test_poly = poly.transform(X_test)
+
+# reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
+# for c in reg_strengths:
+#     logreg = LogisticRegression(random_state=0, C=c, max_iter=10000)
+#     logreg.fit(X_train_poly, y_train)
+#     y_pred = logreg.predict(X_test_poly)
+#     print(f"Accuracy, F1 Score of classifier with 1 degree polynomial combination of features and C={c}: {logreg.score(X_test_poly, y_test)}, {f1_score(y_test, y_pred)}")
+#     y_pred = logreg.predict(X_test_poly)
+
+#     # Get the coefficients (weights)
+#     weights = logreg.coef_
+
+#     # Create a list of (weight, feature_name) tuples
+#     weight_feature_pairs = []
+#     for i, feature in enumerate(data23.columns):
+#         weight_feature_pairs.append((weights[0][i], feature))
+
+#     # Sort the list of tuples based on the weight (the first element of each tuple)
+#     sorted_weights = sorted(weight_feature_pairs)
+
+#     # Print the sorted weights
+#     print("Weights (Coefficients) from Lowest to Highest:")
+#     for weight, feature in sorted_weights:
+#         print(f"{feature}: {weight:.4f}")
+
+# ------------------- SVM
+# c_values = [1.0, 10.0, 100.0, 1000.0]
+# gamma_values = [10.0, 100.0, 1000.0]
+# for c in c_values:
+#    for gamma in gamma_values:
+#        if (c != 100.0 or c != 1000.0) and gamma != 10.0:
+#             model = SVC(C=c, gamma=gamma, random_state=0)
+#             model.fit(X_train, y_train)
+#             y_pred = model.predict(X_test)
+#             print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_test, y_test)}, {f1_score(y_test, y_pred)}")
