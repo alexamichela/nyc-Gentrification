@@ -71,7 +71,7 @@ for i,r in data23.iterrows():
 data23['employmentStatus']=0
 for i,r in data23.iterrows():
     if r['INC_EARNINGS_P']==1:
-        data23.loc[i,'youngIndicator']=1
+        data23.loc[i,'employmentStatus']=1
 
 # creating the outcome variable
 data23['genIndicator']=0
@@ -81,7 +81,7 @@ for i,r in data23.iterrows():
     else:
         data23.loc[i,'genIndicator']=1 # gentrified if neighbirhood rating now is higher than then - 0
 
-data23=data23.drop(columns=['HH62PLUS', 'HHUNDER18', 'HHUNDER6', 'GENDER_P', 'NABENOW_RATE', 'NABETHEN_RATE', 'SAFETY_RATE'])
+data23=data23.drop(columns=['HH62PLUS', 'HHUNDER18', 'HHUNDER6', 'GENDER_P', 'INC_EARNINGS_P', 'NABENOW_RATE', 'NABETHEN_RATE', 'SAFETY_RATE'])
 
 # Building Models -----------------------------------------------------------------------
 DATA = data23.to_numpy()
