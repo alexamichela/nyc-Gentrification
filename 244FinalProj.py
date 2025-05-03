@@ -112,16 +112,20 @@ X_test = scaler.transform(X_test)
 
 
 
-# for i in [50,100,150]:
-#     for k in range(1,10):
-#         forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=i, max_features=None, max_depth=k)
+
+
+# for j in ['sqrt', 'log2', None]:
+#     for k in range(1,11):
+#         forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=150, max_features=j, max_depth=k)
 #         forestModel.fit(X_train, y_train)
 #         accuracy = forestModel.score(X_val, y_val)
 #         y_pred = forestModel.predict(X_val)
 #         f1 = f1_score(y_val, y_pred)
-#         print(f"Accuracy with n_estimators={i}, max_features=None, max_depth={k}: {accuracy}")
+#         print(f"Accuracy with n_estimators=150, max_features={j}, max_depth={k}: {accuracy}")
 #         print(f"F1 Score: {f1}")
 
+# print('\nDONE\n')
+# print("\nbest max features:\n")
 # for j in ['sqrt', 'log2',None]:
 #     forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=100, max_features=j, max_depth=None)
 #     forestModel.fit(X_train, y_train)
@@ -129,6 +133,26 @@ X_test = scaler.transform(X_test)
 #     y_pred = forestModel.predict(X_val)
 #     f1 = f1_score(y_val, y_pred)
 #     print(f"Accuracy with n_estimators=default 100, max_features={j}, max_depth=None: {accuracy}")
+#     print(f"F1 Score: {f1}")
+
+# print("\nbest max depth:\n")
+# for i in range(1,11):
+#     forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=100, max_features='sqrt', max_depth=i)
+#     forestModel.fit(X_train, y_train)
+#     accuracy = forestModel.score(X_val, y_val)
+#     y_pred = forestModel.predict(X_val)
+#     f1 = f1_score(y_val, y_pred)
+#     print(f"Accuracy with n_estimators=default 100, max_features=None, max_depth={i}: {accuracy}")
+#     print(f"F1 Score: {f1}")
+
+# print("\nbest num estimators:\n")
+# for k in [50,100,150]:
+#     forestModel = ensemble.RandomForestClassifier(random_state=0, n_estimators=k, max_features='sqrt', max_depth=None)
+#     forestModel.fit(X_train, y_train)
+#     accuracy = forestModel.score(X_val, y_val)
+#     y_pred = forestModel.predict(X_val)
+#     f1 = f1_score(y_val, y_pred)
+#     print(f"Accuracy with n_estimators={k}, max_features=sqrt, max_depth=None: {accuracy}")
 #     print(f"F1 Score: {f1}")
 
 
