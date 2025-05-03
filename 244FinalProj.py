@@ -80,22 +80,15 @@ for i,r in data23.iterrows():
         data23.loc[i,'genIndicator']=0 # not gentried if now rating is lower than - 1
     else:
         data23.loc[i,'genIndicator']=1 # gentrified if neighbirhood rating now is higher than then - 0
-<<<<<<< HEAD
 
-data23=data23.drop(columns=['HH62PLUS', 'HHUNDER18', 'HHUNDER6', 'GENDER_P', 'INC_EARNINGS_P', 'NABENOW_RATE', 'NABETHEN_RATE'])
-
-=======
 data23=data23.drop(columns=['HH62PLUS', 'HHUNDER18','INC_EARNINGS_P','HHUNDER6', 'GENDER_P', 'NABENOW_RATE', 'NABETHEN_RATE'])
-print(data23.columns)
->>>>>>> 5f1da4d ('change')
+
 # Building Models -----------------------------------------------------------------------
 DATA = data23.to_numpy()
 np.random.seed(45)
 np.random.shuffle(DATA)
 X = DATA[:,:-1]
 y = DATA[:,-1]
-
-print(DATA.shape)
 
 #Splitting into train, validation, test
 #Split data into training data and testing data
@@ -115,7 +108,6 @@ X_test = scaler.transform(X_test)
 # numTrees=[]
 # numFt=[]
 # maxDep=[]
-
 
 for i in [50,100,150,200]:
     for j in ['sqrt', 'log2']:
@@ -159,7 +151,6 @@ for i in [50,100,150,200]:
 #     print(f"Accuracy with n_estimators={k}, max_features=sqrt, max_depth=None: {accuracy}")
 #     print(f"F1 Score: {f1}")
 
-
 # Logistic Regression
 # Generate features corresponding to different degree polynomial combinations and print the accuracy for each degree
 # for degree in range(1,6):
@@ -177,11 +168,11 @@ for i in [50,100,150,200]:
 #    print(f"F1 Score on validation data with degree={degree}: {f1_score(y_val, y_pred)}")
 
 #DETERMINE WHAT DEGREE HAS THE HIGHEST ACCURACY ⇒ use that degree
-# poly = PolynomialFeatures(degree=1)
-# # Fit and transform training data
-# X_train_poly = poly.fit_transform(X_train)
-# # Transform validation data
-# X_val_poly = poly.transform(X_val)
+poly = PolynomialFeatures(degree=1)
+# Fit and transform training data
+X_train_poly = poly.fit_transform(X_train)
+# Transform validation data
+X_val_poly = poly.transform(X_val)
 
 # # Using 5-fold cross validation, tune the regularization hyperparameter C for logistic regression
 # reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
@@ -191,13 +182,13 @@ for i in [50,100,150,200]:
 #    print(f"Average accuracy of logistic regression with C={c}: {np.mean(scores)}")
 
 # without cross validation
-# reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
-# for c in reg_strengths:
-#    classifier = LogisticRegression(random_state=0, C=c)
-#    classifier.fit(X_train_poly, y_train)
-#    print(f"Accuracy of classifier with 1 degree polynomial combination of features and C={c}: {classifier.score(X_val_poly, y_val)}")
-#    y_pred = classifier.predict(X_val_poly)
-#    print(f"F1 Score on validation data with degree=1, C={c}: {f1_score(y_val, y_pred)}")
+reg_strengths = [1, 3, 10, 30, 100, 300, 1000]
+for c in reg_strengths:
+   classifier = LogisticRegression(random_state=0, C=c, max_iter=1000)
+   classifier.fit(X_train_poly, y_train)
+   print(f"Accuracy of classifier with 1 degree polynomial combination of features and C={c}: {classifier.score(X_val_poly, y_val)}")
+   y_pred = classifier.predict(X_val_poly)
+   print(f"F1 Score on validation data with degree=1, C={c}: {f1_score(y_val, y_pred)}")
 
 #Support Vector Machines
 # model = SVC(random_state=0)
@@ -214,21 +205,29 @@ for i in [50,100,150,200]:
 # y_pred2 = model2.predict(X_val)
 # print(f"Linear Kernel F1 Score on validation data: {f1_score(y_val, y_pred2)}")
 
-# #MUST SEE WHICH KERNEL PRODUCES HIGHER SCORES AND THEN PUT THAT HERE
-# # Create a support vector classifier, train it on the training data, 
-# # and test it on the validation data.
-# # For parameter C, explore values of 1.0, 10.0, 100.0, and 1000.0
-# # For parameter gamma, explore values of 1.0, 10.0, 100.0, and 1000.0 
-# c_values = [1.0, 10.0, 100.0, 1000.0]
-# gamma_values = [1.0, 10.0, 100.0, 1000.0]
-# for c in c_values:
-#    for gamma in gamma_values:
-#        model = SVC(C=c, gamma=gamma, kernel='linear', random_state=0)
-#        model.fit(X_train, y_train)
-#        print(f"Accuracy on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}")
-#        y_pred = model.predict(X_val)
-#        print(f"F1 Score on validation data: {f1_score(y_val, y_pred)}")
+#MUST SEE WHICH KERNEL PRODUCES HIGHER SCORES AND THEN PUT THAT HERE
+# Create a support vector classifier, train it on the training data, 
+# and test it on the validation data.
+# For parameter C, explore values of 1.0, 10.0, 100.0, and 1000.0
+# For parameter gamma, explore values of 1.0, 10.0, 100.0, and 1000.0 
+c_values = [1.0, 10.0, 100.0, 1000.0]
+gamma_values = [1.0, 10.0, 100.0, 1000.0]
+print('Linear Kernel Performance')
+for c in c_values:
+   for gamma in gamma_values:
+       model = SVC(C=c, gamma=gamma, kernel='linear', random_state=0)
+       model.fit(X_train, y_train)
+       y_pred = model.predict(X_val)
+       print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}, {f1_score(y_val, y_pred)}")
 
+print('RBF Kernel Performance')
+for c in c_values:
+   for gamma in gamma_values:
+       model = SVC(C=c, gamma=gamma, random_state=0)
+       model.fit(X_train, y_train)
+       y_pred = model.predict(X_val)
+       print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_val, y_val)}, {f1_score(y_val, y_pred)}")
+       
 # Final Testing ----------------------------------------------
 # poly = PolynomialFeatures(degree=1)
 # # Fit and transform training data
