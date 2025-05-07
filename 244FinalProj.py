@@ -245,14 +245,3 @@ for c in reg_strengths:
     print("Weights (Coefficients) from Lowest to Highest:")
     for weight, feature in sorted_weights:
         print(f"{feature}: {weight:.4f}")
- 
-# ------------------- SVM
-c_values = [1.0, 10.0, 100.0, 1000.0]
-gamma_values = [10.0, 100.0, 1000.0]
-for c in c_values:
-   for gamma in gamma_values:
-       if (c != 100.0 or c != 1000.0) and gamma != 10.0:
-            model = SVC(C=c, gamma=gamma, random_state=0)
-            model.fit(X_train, y_train)
-            y_pred = model.predict(X_test)
-            print(f"Accuracy, F1 Score on validation data with C={c} and gamma={gamma}: {model.score(X_test, y_test)}, {f1_score(y_test, y_pred)}")
